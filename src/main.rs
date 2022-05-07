@@ -130,10 +130,9 @@ fn main() {
     }
 
     let mut iters = 0;
-    let mut not_done = true;
     let mut best_so_far = chromosomes[0].clone();
 
-    while not_done {
+    while best_so_far.fit < 0.95 {
         // one run through chromosomes
         for i in 0..(N_CHROMOS/2) {
             let mut c1 = roulette(&chromosomes, &mut r);
@@ -147,7 +146,6 @@ fn main() {
             let c1_val = eval_gene(&c1.genes, &mut gene_map);
             if c1_val == target {
                 println!("{:?}", c1.genes);
-                not_done = false;
                 break;
             }
 
@@ -160,12 +158,12 @@ fn main() {
             if next_chromos[i*2].fit > best_so_far.fit {
                 best_so_far = next_chromos[i*2].clone();
                 change_list.push((iters, best_so_far.clone()));
+                println!("New best {:?}", best_so_far);
             }
 
             let c2_val = eval_gene(&c2.genes, &mut gene_map);
             if c2_val == target {
                 println!("{:?}", c2.genes);
-                not_done = false;
                 break;
             }
 
@@ -178,6 +176,7 @@ fn main() {
             if next_chromos[i*2+1].fit > best_so_far.fit {
                 best_so_far = next_chromos[i*2+1].clone();
                 change_list.push((iters, best_so_far.clone()));
+                println!("New best {:?}", best_so_far);
             }
         }
         
